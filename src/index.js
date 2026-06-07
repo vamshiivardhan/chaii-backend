@@ -21,6 +21,7 @@
 //     )
 
 // }
+
 // catch(error){
 //     console.error("Error: ", error);
 //     throw error;
@@ -57,6 +58,17 @@ const connectDB = async () => {
         process.exit(1);
     }
 };
-connectDB();
+connectDB() 
+
+.then( () => {
+    app.listen(process.env.PORT ||8000, () => {
+        console.log(`⚙️ Server is running on port ${process.env.PORT || 8000}`)
+    })
+    console.log("MONGO db connected successfully !!")
+})
+
+.catch((error) => {
+    console.log("MONGO db concection failed !!", error);
+});
 
 export default connectDB;
