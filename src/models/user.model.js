@@ -1,9 +1,9 @@
-import mongoose from 'mongoose';
+import mongoose , { Schema }from 'mongoose';
 import jwt from 'jsonwebtoken';
 import bcrypt from 'bcryptjs';
 
-
-const userSchema = new Schema({
+ 
+const userSchema = new Schema({ 
 
  username: {
     type: String,
@@ -50,16 +50,18 @@ refreshToken: {
     type: String,
     trim: true
 },
-createdAt: {
-    type: Date,
-    default: Date.now
+// createdAt: {
+//     type: Date,
+//     default: Date.now
 
-},updatedAt: {
-    type: Date,
-    default: Date.now
+// },updatedAt: {
+//     type: Date,
+//     default: Date.now
+// }
+
 }
-});
-
+, { timestamps: true });
+ 
 
 
 
@@ -95,10 +97,6 @@ methods.generateRefreshToken = function () {
      jwt.sign(
     {
         _id: this._id,
-        username: this.username,
-        email: this.email,
-        fullName: this.fullName,
-        avatar: this.avatar,
 
     },
     process.env.ACCESS_TOKEN_SECRET,

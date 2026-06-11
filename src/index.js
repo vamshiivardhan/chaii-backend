@@ -71,4 +71,4 @@ connectDB()
     console.log("MONGO db concection failed !!", error);
 });
 
-export default connectDB;
+export default connectDB; 
