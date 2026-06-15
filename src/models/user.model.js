@@ -24,10 +24,6 @@ fullName: {
     required: true,
     trim: true
 },
-avatar: {
-    type: String,
-    trim: true
-},
 password: {
     type: String,
     required: [true, 'Password is required']
@@ -65,11 +61,10 @@ refreshToken: {
 
 
 
-userSchema.pre('save', async function (next)  {
-    if(!this.isModified('password')) return next(); 
-        this.password = bcrypt.hashSync(this.password,10);
-    
-    next();
+userSchema.pre('save', async function () {
+    if(!this.isModified('password')) return;
+
+    this.password = await bcrypt.hash(this.password, 10);
 });
 
 userSchema.methods.isPasswordCorrect = async function (password) {
@@ -77,7 +72,7 @@ userSchema.methods.isPasswordCorrect = async function (password) {
 }
 
 userSchema.methods.generateAccessToken = function () {
-    jwt.sign(
+    return jwt.sign(
     {
         _id: this._id,
         username: this.username,
@@ -94,12 +89,12 @@ userSchema.methods.generateAccessToken = function () {
 )
 }
 userSchema.methods.generateRefreshToken = function () {
-     jwt.sign(
+     return jwt.sign(
     {
         _id: this._id,
 
     },
-    process.env.ACCESS_TOKEN_SECRET,
+    process.env.REFRESH_TOKEN_SECRET,
     {
         expiresIn: process.env.REFRESH_TOKEN_EXPIRES_IN
     }
